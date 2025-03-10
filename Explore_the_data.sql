@@ -6,7 +6,7 @@ SELECT
 FROM
     PRODUCTS
 ORDER BY
-    BARCODE
+    BARCODE;
 
 -- check for NULL values
 SELECT
@@ -19,7 +19,7 @@ SELECT
     COUNT(*) - COUNT(MANUFACTURER) AS MANUFACTURER_NULLS,
     COUNT(*) - COUNT(BRAND) AS BRAND_NULLS
 FROM
-    PRODUCTS
+    PRODUCTS;
 -- # of NULL values in each field is as follows:
 -- BARCODE : 4025
 -- CATEGORY_1 : 111
@@ -59,7 +59,7 @@ WHERE
             HAVING
                 COUNT(*) > 1
     )
-)
+);
 -- 316 duplicate rows are deleted
 
 -- check if every barcode is unique
@@ -73,7 +73,7 @@ WHERE
 GROUP BY
     BARCODE
 HAVING
-    COUNT(*) > 1 -- filtering the duplicates
+    COUNT(*) > 1; -- filtering the duplicates
 -- 27 'BARCODE' is not UNIQUE
 
 
@@ -86,7 +86,7 @@ SELECT
 FROM
     TRANSACTIONS
 ORDER BY
-    RECEIPT_ID
+    RECEIPT_ID;
 
 -- check the nulls
 SELECT
@@ -100,7 +100,7 @@ SELECT
     COUNT(*) - COUNT(FINAL_QUANTITY) AS FINAL_QUANTITY_NULLS,
     COUNT(*) - COUNT(FINAL_SALE) AS FINAL_SALE_NULLS
 FROM
-    TRANSACTIONS
+    TRANSACTIONS;
 -- Barcode ID column has 5762 NULL values. Since it is the primary key in 'Products' table we cannot know the details!
 -- Also 'final_sale' field has 12500 NULL values, which is 25% of the rows!
 
@@ -116,7 +116,7 @@ UPDATE
 SET
     FINAL_QUANTITY = '0.00' -- because the rest of the data format is double
 WHERE
-    FINAL_QUANTITY = 'zero'
+    FINAL_QUANTITY = 'zero';
 -- the column now can be converted to number format
 
 -- Delete duplicate rows
@@ -150,7 +150,7 @@ GROUP BY
 HAVING
     COUNT(*) > 1 -- check if there is more than one of any row
     )
-)
+);
 -- 568 duplicate rows are deleted
 
 -- In transactions table, 'user_id' and 'barcode' fields are foreign key.
@@ -164,7 +164,7 @@ FROM
 GROUP BY
     RECEIPT_ID
 HAVING
-    COUNT(*) = 1 -- check if my assummption is correct
+    COUNT(*) = 1; -- check if my assummption is correct
 -- Each receipt_id appears in more than one row, which shows that it is not primary key
 
 -- excluding 'final_quantity' and 'final_sale' fields to see if the multiple 'receipt_id's differentiates in these columns
@@ -186,7 +186,7 @@ GROUP BY
     USER_ID,
     BARCODE
 HAVING
-    COUNT(*) = 1 -- I want to see If I will get any rows returned unlike the previous query
+    COUNT(*) = 1; -- I want to see If I will get any rows returned unlike the previous query
 -- since there is no rows returned, we can say the multiple 'receipt_id's differentiates in 'final_quantity' and 'final_sale' columns!
 -- this is because of the NULL values in 'final_sale' and the inconsistency in 'final_quantity'
 
@@ -196,7 +196,7 @@ SELECT
     AVG(FINAL_SALE) AS AVG_SALE,
     MAX(FINAL_SALE) AS MAX_SALE
 FROM
-    TRANSACTIONS
+    TRANSACTIONS;
 
 SELECT
     *
@@ -205,7 +205,7 @@ FROM
 WHERE
     FINAL_SALE > 100
 ORDER BY
-    FINAL_SALE DESC
+    FINAL_SALE DESC;
 
 -- check the consisteny within date fields
 SELECT
@@ -213,7 +213,7 @@ SELECT
 FROM
     TRANSACTIONS
 WHERE
-    SCAN_DATE < PURCHASE_DATE
+    SCAN_DATE < PURCHASE_DATE;
 -- 94 records have 'scan_date' earlier than 'purchase_date' which cannot be correct since it is not possible to scan a receipt without having it
 -- these values either should be dropped or further analyzed to understand how they should actually be
 
@@ -223,7 +223,7 @@ SELECT
 FROM
     TRANSACTIONS
 ORDER BY
-    STORE_NAME ASC
+    STORE_NAME ASC;
 -- between 952 distinct values I saw that there is a store called 'ALQI', not sure If this is an actual store or typo for 'ALDI'
 
 SELECT
@@ -233,7 +233,7 @@ FROM
 WHERE
     STORE_NAME IN ('ALDI', 'ALQI')
 ORDER BY
-    STORE_NAME DESC
+    STORE_NAME DESC;
 -- There is only one recipt with 'ALQI', this should be further discussed
 
 
@@ -246,7 +246,7 @@ SELECT
 FROM
     USERS
 ORDER BY
-    ID
+    ID;
 
 -- check the nulls
 SELECT
@@ -258,7 +258,7 @@ SELECT
     COUNT(*) - COUNT(LANGUAGE) AS LANGUAGE_NULLS,
     COUNT(*) - COUNT(GENDER) AS GENDER_NULLS
 FROM
-    USERS
+    USERS;
 -- NULL values identified in the following fields:
 -- 'BIRTH_DATE' - 3675
 -- 'STATE' - 4812
@@ -271,7 +271,7 @@ SELECT
 FROM
     USERS
 ORDER BY
-    STATE
+    STATE;
 -- checks out
 
 SELECT
@@ -279,7 +279,7 @@ SELECT
 FROM
     USERS
 ORDER BY
-    LANGUAGE
+    LANGUAGE;
 -- checks out
 
 SELECT
@@ -287,7 +287,7 @@ SELECT
 FROM
     USERS
 ORDER BY
-    GENDER 
+    GENDER;
 -- some values can be grouped together as following:
 -- male : "male"
 -- female : "female"
@@ -303,7 +303,7 @@ SET
 WHERE
     GENDER = 'Non-Binary'
 OR
-    GENDER = 'non_binary'
+    GENDER = 'non_binary';
     
 UPDATE
     USERS
@@ -316,7 +316,7 @@ OR
 OR
     GENDER = 'not_specified'
 OR
-    GENDER = 'unknown'
+    GENDER = 'unknown';
 
 UPDATE
     USERS
@@ -325,7 +325,7 @@ SET
 WHERE
     GENDER = 'Prefer not to say'
 OR
-    GENDER = 'prefer_not_to_say'
+    GENDER = 'prefer_not_to_say';
 
 -- check the date fields
 SELECT
@@ -334,7 +334,7 @@ SELECT
     MIN(BIRTH_DATE),
     MAX(BIRTH_DATE)
 FROM
-    USERS
+    USERS;
 -- Apparently someone was born in 1900 and still alive :)
 
 SELECT
@@ -342,13 +342,13 @@ SELECT
 FROM
     USERS
 ORDER BY
-    BIRTH_DATE
+    BIRTH_DATE;
 -- An age range should be determined to validate the 'birth_date' field
 -- For data reliability, I will delete any user who was born before 1908 considering, AS OF JANUARY 2025 the oldest human alive is about 117 years old
 
 DELETE FROM
     USERS
-WHERE YEAR(BIRTH_DATE) < 1908
+WHERE YEAR(BIRTH_DATE) < 1908;
 
 -- check for duplicates
 SELECT
@@ -369,7 +369,7 @@ GROUP BY
     LANGUAGE,
     GENDER
 HAVING
-    COUNT(*) > 1
+    COUNT(*) > 1;
 -- NO DUPLICATES
 
 -- check if every value in 'ID' column is unique
@@ -381,7 +381,7 @@ FROM
 GROUP BY
     ID
 HAVING
-    COUNT(*) > 1
+    COUNT(*) > 1;
 -- YES IT IS
 
 -- Common rows between tables:
