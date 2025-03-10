@@ -179,7 +179,7 @@ SELECT
     ROUND((TOTAL_USERS / LAG(TOTAL_USERS) OVER (
         ORDER BY YEAR) -1) * 100, 1) AS YoY_Growth_Rate, -- YoY growth rate
     ROUND((POWER(TOTAL_USERS / NULLIF(USERS_3_YEARS_AGO, 0), (1/3)) - 1) * 100, 1) AS CAGR_3_YEARS, -- last 3 years' compound growth rate
-    ROUND((POWER(TOTAL_USERS / NULLIF(USERS_3_YEARS_AGO, 0), (1/5)) - 1) * 100, 1) AS CAGR_5_YEARS -- last 5 years' compound growth rate
+    ROUND((POWER(TOTAL_USERS / NULLIF(USERS_5_YEARS_AGO, 0), (1/5)) - 1) * 100, 1) AS CAGR_5_YEARS -- last 5 years' compound growth rate
 FROM
     user_metrics;
 -- We can clearly see that Fetch's user growth is declining every year
